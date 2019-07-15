@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class CommentInput extends Component {
+class CommentInput extends React.Component {
   constructor() {
     super();
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   state = {
     username: '',
@@ -16,6 +17,22 @@ class CommentInput extends Component {
     this.setState({
       username: e.target.value
     });
+  }
+
+  // 改变留言框
+  handleContentChange(e) {
+    this.setState({
+      content: e.target.value
+    });
+  }
+
+  // 发布
+  handleSubmit() {
+    if (this.props.onSubmit) {
+      const { username, content } = this.state;
+      this.props.onSubmit({ username, content });
+    }
+    this.setState({ content: '' });
   }
 
   render() {
@@ -40,7 +57,7 @@ class CommentInput extends Component {
           </div>
         </div>
         <div className="comment-field-button">
-          <button>
+          <button onClick={this.handleSubmit}>
             发布
           </button>
         </div>
