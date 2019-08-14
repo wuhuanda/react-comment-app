@@ -1,6 +1,31 @@
 import React from 'react';
 
 class Comment extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      timeString: ''
+    };
+  }
+
+  componentDidMount() {
+    this._updateTimeString();
+    this._timer = setInterval(
+      this._updateTimeString.bind(this),
+      5 * 1000
+    );
+  }
+
+  _updateTimeString() {
+    const comment = this.props.comment;
+    const duration = (Number(new Date()) - comment.createdTime) / 1000;
+    this.setState({
+      timeString: duration > 60
+        ? `${Math.round(duration / 60)} 分钟前`
+        : `${Math.round(Math.max(duration, 1))} 秒前`
+    });
+  }
+
   render() {
     return (
       <div className="comment">
@@ -8,6 +33,9 @@ class Comment extends React.Component {
           <span>{this.props.comment.username}：</span>
         </div>
         <p>{this.props.comment.content}</p>
+        <span className="comment-createdtime">
+          {this.state.timeString}
+        </span>
       </div>
     );
   }
