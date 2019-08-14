@@ -6,6 +6,7 @@ class CommentInput extends React.Component {
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUsernameBlur = this.handleUsernameBlur.bind(this);
   }
   state = {
     username: '',
@@ -14,6 +15,7 @@ class CommentInput extends React.Component {
 
   componentDidMount() {
     this.textarea.focus();
+    this._loadUsername();
   }
 
   // 改变用户名
@@ -39,6 +41,22 @@ class CommentInput extends React.Component {
     this.setState({ content: '' });
   }
 
+  _saveUsername(username) {
+    localStorage.setItem('username', username);
+  }
+
+  _loadUsername() {
+    const username = localStorage.getItem('username');
+    username && this.setState({
+      username
+    });
+  }
+
+  // 用户名输入框失焦
+  handleUsernameBlur(e) {
+    this._saveUsername(e.target.value);
+  }
+
   render() {
     return (
       <div className="comment-input">
@@ -47,6 +65,7 @@ class CommentInput extends React.Component {
           <div className="comment-field-input">
             <input
               value={this.state.username}
+              onBlur={this.handleUsernameBlur}
               onChange={this.handleUsernameChange}
             />
           </div>
