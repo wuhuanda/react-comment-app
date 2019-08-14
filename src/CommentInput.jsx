@@ -12,6 +12,10 @@ class CommentInput extends React.Component {
     content: '',
   }
 
+  componentDidMount() {
+    this.textarea.focus();
+  }
+
   // 改变用户名
   handleUsernameChange(e) {
     this.setState({
@@ -51,6 +55,7 @@ class CommentInput extends React.Component {
           <span className="comment-field-name">评论内容：</span>
           <div className="comment-field-input">
             <textarea
+              ref={textarea => { this.textarea = textarea }}
               value={this.state.content}
               onChange={this.handleContentChange}
             />
