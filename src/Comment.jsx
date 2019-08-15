@@ -6,6 +6,7 @@ class Comment extends React.Component {
     this.state = {
       timeString: ''
     };
+    this.handleDeleteComment = this.handleDeleteComment.bind(this);
   }
 
   componentDidMount() {
@@ -14,6 +15,10 @@ class Comment extends React.Component {
       this._updateTimeString.bind(this),
       5 * 1000
     );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._timer);
   }
 
   _updateTimeString() {
@@ -26,6 +31,10 @@ class Comment extends React.Component {
     });
   }
 
+  handleDeleteComment() {
+    this.props.onDeleteComment && this.props.onDeleteComment(this.props.index);
+  }
+
   render() {
     return (
       <div className="comment">
@@ -35,6 +44,9 @@ class Comment extends React.Component {
         <p>{this.props.comment.content}</p>
         <span className="comment-createdtime">
           {this.state.timeString}
+        </span>
+        <span className="comment-delete" onClick={this.handleDeleteComment}>
+          删除
         </span>
       </div>
     );
